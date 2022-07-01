@@ -1,0 +1,8 @@
+version: "Apple Swift version 5.6.1 (swiftlang-5.6.0.323.66 clang-1316.0.20.12)"
+options: "a2c1b43a5043cc21a1c5bafb8322a95d2234b53d346373612eef411ef89b6f2e"
+build_start_time: [1656684014, 220924854]
+build_end_time: [1656684018, 593147039]
+inputs:
+  "/Users/jhanvivaishnav/Desktop/TODO-flutter/TODO-Flutter/macos/Flutter/GeneratedPluginRegistrant.swift": [1656683988, 251613140]
+  "/Users/jhanvivaishnav/Desktop/TODO-flutter/TODO-Flutter/macos/Runner/AppDelegate.swift": [1631561668, 45609951]
+  "/Users/jhanvivaishnav/Desktop/TODO-flutter/TODO-Flutter/macos/Runner/MainFlutterWindow.swift": [1631561668, 47055244]

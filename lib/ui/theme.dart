@@ -14,6 +14,7 @@ class Themes {
   static final light = ThemeData(
     brightness: Brightness.light,
     primaryColor: Colors.white,
+    indicatorColor: primaryClr,
     textTheme: TextTheme(
         bodyText2:
             TextStyle(color: Get.isDarkMode ? Colors.white : darkGreyClr)),
@@ -21,6 +22,7 @@ class Themes {
   );
   static final dark = ThemeData(
     brightness: Brightness.dark,
+    indicatorColor: primaryClr,
     primaryColor: darkGreyClr,
     backgroundColor: darkGreyClr,
   );
