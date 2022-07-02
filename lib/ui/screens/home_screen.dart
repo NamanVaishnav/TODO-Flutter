@@ -92,26 +92,46 @@ class _HomeScreenState extends State<HomeScreen>
             ),
           ),
           const SizedBox(height: 10),
-          TabBar(
-            tabs: const [
-              Tab(text: 'Today'),
-              Tab(text: 'Tomorrow'),
-              Tab(text: 'Upcoming')
-            ],
-            controller: _controller,
-            indicatorSize: TabBarIndicatorSize.label,
-            onTap: (index) {
-              _searchController.text = "";
-              filter = false;
-              FocusScope.of(context).requestFocus(FocusNode());
-            },
-          ),
           Expanded(
-              child: TabBarView(
-            physics: const NeverScrollableScrollPhysics(),
-            controller: _controller,
-            children: tabs,
-          ))
+            // height: double.infinity,
+            child: Row(
+              children: [
+                RotatedBox(
+                  quarterTurns: 3,
+                  child: TabBar(
+                    tabs: const [
+                      Tab(
+                        // text: ,
+                        child: Text('Upcoming'),
+                      ),
+                      Tab(text: 'Tomorrow'),
+                      Tab(text: 'Today'),
+                    ],
+                    controller: _controller,
+                    labelStyle: Themes().taskTileHeadingTextStyle,
+                    indicator: const BoxDecoration(
+                      color: yellowClr,
+                    ),
+                    // indicatorSize: TabBarIndicatorSize.label,
+                    onTap: (index) {
+                      _searchController.text = "";
+                      filter = false;
+                      FocusScope.of(context).requestFocus(FocusNode());
+                    },
+                  ),
+                ),
+                Expanded(
+                    child: Container(
+                  // width: 200,
+                  child: TabBarView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    controller: _controller,
+                    children: tabs,
+                  ),
+                ))
+              ],
+            ),
+          ),
         ]),
       ),
     );
