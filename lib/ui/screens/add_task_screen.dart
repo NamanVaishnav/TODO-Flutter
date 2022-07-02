@@ -55,158 +55,167 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   @override
   Widget build(BuildContext context) {
     bool update = (widget.task != null) ? true : false;
-    return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      appBar: AppBar(
-        backgroundColor: primaryClr,
-        title: Text(update ? 'Update Task' : 'Add Task'),
-        leading: IconButton(
-          onPressed: () {
-            ThemeServices().switchTheme();
-          },
-          icon: Icon(
-            Get.isDarkMode
-                ? Icons.wb_sunny_outlined
-                : Icons.nightlight_round_outlined,
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Theme.of(context).primaryColor,
+        appBar: AppBar(
+          backgroundColor: primaryClr,
+          title: Text(update ? 'Update Task' : 'Add Task'),
+          leading: IconButton(
+            onPressed: () {
+              ThemeServices().switchTheme();
+            },
+            icon: Icon(
+              Get.isDarkMode
+                  ? Icons.wb_sunny_outlined
+                  : Icons.nightlight_round_outlined,
+            ),
+            color: Get.isDarkMode ? Colors.white : darkGreyClr,
           ),
-          color: Get.isDarkMode ? Colors.white : darkGreyClr,
+          actions: [
+            IconButton(
+              onPressed: () => Get.back(),
+              icon: const Icon(Icons.cancel),
+            )
+          ],
         ),
-        actions: [
-          IconButton(
-            onPressed: () => Get.back(),
-            icon: const Icon(Icons.cancel),
-          )
-        ],
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            margin: const EdgeInsets.only(top: 15, left: 20, right: 20),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  InputField(
-                    isEnabled: true,
-                    hint: 'Enter title',
-                    label: 'Title',
-                    iconOrdrop: 'icon',
-                    controller: _titleController,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  InputField(
-                    isEnabled: true,
-                    hint: 'Enter description',
-                    label: 'Description',
-                    iconOrdrop: 'icon',
-                    controller: _descriptionController,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  InputField(
-                    onTap: () {
-                      _selectDate(context);
-                    },
-                    controller: _dateController,
-                    isEnabled: false,
-                    hint: _selectedDate.toString(),
-                    label: 'Date',
-                    iconOrdrop: 'button',
-                    widget: IconButton(
-                      icon: const Icon(
-                        Icons.date_range,
-                        color: primaryClr,
-                      ),
-                      onPressed: () {
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Container(
+              margin: const EdgeInsets.only(top: 15, left: 20, right: 20),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    InputField(
+                      isEnabled: true,
+                      hint: 'Enter title',
+                      label: 'Title',
+                      iconOrdrop: 'icon',
+                      controller: _titleController,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    InputField(
+                      isEnabled: true,
+                      hint: 'Enter description',
+                      label: 'Description',
+                      iconOrdrop: 'icon',
+                      controller: _descriptionController,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    InputField(
+                      onTap: () {
                         _selectDate(context);
                       },
+                      controller: _dateController,
+                      isEnabled: false,
+                      hint: _selectedDate.toString(),
+                      label: 'Date',
+                      iconOrdrop: 'button',
+                      widget: IconButton(
+                        icon: const Icon(
+                          Icons.date_range,
+                          color: primaryClr,
+                        ),
+                        onPressed: () {
+                          _selectDate(context);
+                        },
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.42,
-                          child: InputField(
-                            onTap: () {
-                              _selectStartTime(context);
-                            },
-                            isEnabled: false,
-                            controller: _startTimeController,
-                            label: 'Start Time',
-                            iconOrdrop: 'button',
-                            hint: _startDate.toString(),
-                            widget: IconButton(
-                              icon: const Icon(
-                                Icons.access_time,
-                                color: primaryClr,
-                              ),
-                              onPressed: () {
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.42,
+                            child: InputField(
+                              onTap: () {
                                 _selectStartTime(context);
                               },
-                            ),
-                          )),
-                      SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.42,
-                          child: InputField(
-                            onTap: () {
-                              _selectEndTime(context);
-                            },
-                            controller: _endTimeController,
-                            isEnabled: false,
-                            iconOrdrop: 'button',
-                            label: 'End Time',
-                            hint: _endDate.toString(),
-                            widget: IconButton(
-                              icon: const Icon(Icons.access_time,
-                                  color: primaryClr),
-                              onPressed: () {
+                              isEnabled: false,
+                              controller: _startTimeController,
+                              label: 'Start Time',
+                              iconOrdrop: 'button',
+                              hint: _startDate.toString(),
+                              widget: IconButton(
+                                icon: const Icon(
+                                  Icons.access_time,
+                                  color: primaryClr,
+                                ),
+                                onPressed: () {
+                                  _selectStartTime(context);
+                                },
+                              ),
+                            )),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.42,
+                            child: InputField(
+                              onTap: () {
                                 _selectEndTime(context);
                               },
-                            ),
-                          )),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      //_colorPallete(),
-                      ButtonWidget(
-                          label: update ? 'Update Task' : 'Add Task',
-                          onTap: () async {
-                            _submitDate();
-                            _submitStartTime();
-                            _submitEndTime();
-                            if (_formKey.currentState!.validate()) {
-                              final Task task = Task();
-                              if (update) {
-                                _addTaskToDB(widget.task!);
-                                await _taskController.updateTask(widget.task!);
-                              } else {
-                                _addTaskToDB(task);
-                                await _taskController.addTask(task);
-                              }
+                              controller: _endTimeController,
+                              isEnabled: false,
+                              iconOrdrop: 'button',
+                              label: 'End Time',
+                              hint: _endDate.toString(),
+                              widget: IconButton(
+                                icon: const Icon(Icons.access_time,
+                                    color: primaryClr),
+                                onPressed: () {
+                                  _selectEndTime(context);
+                                },
+                              ),
+                            )),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        //_colorPallete(),
+                        ButtonWidget(
+                            label: update ? 'Update Task' : 'Add Task',
+                            onTap: () async {
+                              _submitDate();
+                              _submitStartTime();
+                              _submitEndTime();
+                              if (_formKey.currentState!.validate()) {
+                                final Task task = Task();
+                                if (update) {
+                                  _addTaskToDB(widget.task!);
+                                  await _taskController
+                                      .updateTask(widget.task!);
+                                } else {
+                                  _addTaskToDB(task);
+                                  await _taskController.addTask(task);
+                                }
 
-                              Get.back();
-                            }
-                          },
-                          color: primaryClr)
-                    ],
-                  )
-                ],
+                                Get.back();
+                              }
+                            },
+                            color: primaryClr)
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),

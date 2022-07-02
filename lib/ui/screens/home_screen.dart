@@ -54,58 +54,66 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      appBar: _appBar(),
-      floatingActionButton: _floatingActionButton(),
-      body: Column(children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: InputField(
-            onChange: (value) {
-              if (value.isNotEmpty) {
-                filter = true;
-              } else {
-                filter = false;
-              }
-              _taskController.searchTask(value);
-            },
-            controller: _searchController,
-            isEnabled: true,
-            hint: 'Search',
-            label: '',
-            iconOrdrop: 'button',
-            widget: IconButton(
-              icon: const Icon(
-                Icons.search_rounded,
-                color: primaryClr,
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Theme.of(context).primaryColor,
+        appBar: _appBar(),
+        floatingActionButton: _floatingActionButton(),
+        body: Column(children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: InputField(
+              onChange: (value) {
+                if (value.isNotEmpty) {
+                  filter = true;
+                } else {
+                  filter = false;
+                }
+                _taskController.searchTask(value);
+              },
+              controller: _searchController,
+              isEnabled: true,
+              hint: 'Search',
+              label: '',
+              iconOrdrop: 'button',
+              widget: IconButton(
+                icon: const Icon(
+                  Icons.search_rounded,
+                  color: primaryClr,
+                ),
+                onPressed: () {},
               ),
-              onPressed: () {},
             ),
           ),
-        ),
-        const SizedBox(height: 10),
-        TabBar(
-          tabs: const [
-            Tab(text: 'Today'),
-            Tab(text: 'Tomorrow'),
-            Tab(text: 'Upcoming')
-          ],
-          controller: _controller,
-          indicatorSize: TabBarIndicatorSize.label,
-          onTap: (index) {
-            _searchController.text = "";
-            filter = false;
-            FocusScope.of(context).requestFocus(FocusNode());
-          },
-        ),
-        Expanded(
-            child: TabBarView(
-          physics: const NeverScrollableScrollPhysics(),
-          controller: _controller,
-          children: tabs,
-        ))
-      ]),
+          const SizedBox(height: 10),
+          TabBar(
+            tabs: const [
+              Tab(text: 'Today'),
+              Tab(text: 'Tomorrow'),
+              Tab(text: 'Upcoming')
+            ],
+            controller: _controller,
+            indicatorSize: TabBarIndicatorSize.label,
+            onTap: (index) {
+              _searchController.text = "";
+              filter = false;
+              FocusScope.of(context).requestFocus(FocusNode());
+            },
+          ),
+          Expanded(
+              child: TabBarView(
+            physics: const NeverScrollableScrollPhysics(),
+            controller: _controller,
+            children: tabs,
+          ))
+        ]),
+      ),
     );
   }
 
