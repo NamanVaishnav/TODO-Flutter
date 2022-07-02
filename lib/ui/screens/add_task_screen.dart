@@ -135,7 +135,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
-                          width: 165,
+                          width: MediaQuery.of(context).size.width * 0.42,
                           child: InputField(
                             onTap: () {
                               _selectStartTime(context);
@@ -156,7 +156,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                             ),
                           )),
                       SizedBox(
-                          width: 165,
+                          width: MediaQuery.of(context).size.width * 0.42,
                           child: InputField(
                             onTap: () {
                               _selectEndTime(context);
