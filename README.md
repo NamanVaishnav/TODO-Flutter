@@ -6,7 +6,7 @@ list of things which is there on application :
 
 - When app launches it should be showing 3 sections of Today, Tomorrow and Upcoming with Plus Icon on Right Side.
 - On click of respective Plus Icon, user should be able to add the task in the list.
-- List will have Task Title and Task description (Description is Optional)
+- List will have Task Title and Task description
 - The added task should be saved in local database.
 - Added task can be modified or deleted and database should be updated accordingly.
 - On application relaunch the previously added/modified task should be displayed from database.
