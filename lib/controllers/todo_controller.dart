@@ -10,11 +10,11 @@ class TodoController extends GetxController {
   getTaskList() {
     switch (currentSelectedIndex) {
       case 0:
-        return getTodaysTask();
+        return getUpcomingTask();
       case 1:
         return getTomorowTask();
       case 2:
-        return getUpcomingTask();
+        return getTodaysTask();
     }
   }
 
