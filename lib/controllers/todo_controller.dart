@@ -3,7 +3,8 @@ import 'package:todo_flutter/db/db_helper.dart';
 import 'package:todo_flutter/models/task.dart';
 
 class TodoController extends GetxController {
-  final RxList taskList = <Task>[].obs;
+  final RxList<Task> taskList = <Task>[].obs;
+  final RxList<Task> filteredTaskList = <Task>[].obs;
   int currentSelectedIndex = 0;
 
   getTaskList() {
@@ -46,6 +47,14 @@ class TodoController extends GetxController {
       allTaks.removeWhere((element1) => element.id == element1.id);
     }
     taskList.assignAll(allTaks);
+  }
+
+  Future<void> searchTask(String query) async {
+    filteredTaskList.assignAll(taskList
+        .where((p0) => p0.title?.toLowerCase().contains(query) ?? false)
+        .toList());
+    filteredTaskList.refresh();
+    taskList.refresh();
   }
 
   addTask(Task task) async {

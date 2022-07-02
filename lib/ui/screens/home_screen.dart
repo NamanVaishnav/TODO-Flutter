@@ -9,6 +9,7 @@ import 'package:todo_flutter/models/task.dart';
 import 'package:todo_flutter/services/theme_services.dart';
 import 'package:todo_flutter/ui/screens/add_task_screen.dart';
 import 'package:todo_flutter/ui/theme.dart';
+import 'package:todo_flutter/ui/widgets/input_field.dart';
 import 'package:todo_flutter/ui/widgets/task_tile.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -23,6 +24,8 @@ class _HomeScreenState extends State<HomeScreen>
   late final TabController _controller = TabController(length: 3, vsync: this);
   List<Widget> tabs = [];
   final TodoController _taskController = Get.put(TodoController());
+  final TextEditingController _searchController = TextEditingController();
+  bool filter = false;
 
   @override
   void initState() {
@@ -56,7 +59,32 @@ class _HomeScreenState extends State<HomeScreen>
       appBar: _appBar(),
       floatingActionButton: _floatingActionButton(),
       body: Column(children: [
-        const SizedBox(height: 20),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: InputField(
+            onChange: (value) {
+              if (value.isNotEmpty) {
+                filter = true;
+              } else {
+                filter = false;
+              }
+              _taskController.searchTask(value);
+            },
+            controller: _searchController,
+            isEnabled: true,
+            hint: 'Search',
+            label: '',
+            iconOrdrop: 'button',
+            widget: IconButton(
+              icon: const Icon(
+                Icons.search_rounded,
+                color: primaryClr,
+              ),
+              onPressed: () {},
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
         TabBar(
           tabs: const [
             Tab(text: 'Today'),
@@ -65,6 +93,11 @@ class _HomeScreenState extends State<HomeScreen>
           ],
           controller: _controller,
           indicatorSize: TabBarIndicatorSize.label,
+          onTap: (index) {
+            _searchController.text = "";
+            filter = false;
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
         ),
         Expanded(
             child: TabBarView(
@@ -120,38 +153,46 @@ class _HomeScreenState extends State<HomeScreen>
 
   Widget _tasks() {
     return Expanded(child: Obx(() {
-      if (_taskController.taskList.isEmpty) {
-        return _noTasksMessage();
+      if (filter == true) {
+        return renderList(_taskController.filteredTaskList);
       } else {
-        return AnimationLimiter(
-          child: ListView.builder(
-              scrollDirection:
-                  MediaQuery.of(context).orientation == Orientation.portrait
-                      ? Axis.vertical
-                      : Axis.horizontal,
-              itemCount: _taskController.taskList.length,
-              itemBuilder: (BuildContext context, int index) {
-                Task task = _taskController.taskList[index];
-                var date = DateFormat.jm().parse(task.startTime!);
-                var myTime = DateFormat('HH:mm').format(date);
-
-                return AnimationConfiguration.staggeredList(
-                  position: index,
-                  duration: Duration(milliseconds: 1000 + index * 20),
-                  child: ScaleAnimation(
-                    // horizontalOffset: 400.0,
-                    child: FadeInAnimation(
-                      child: GestureDetector(
-                        onTap: () => displayBottomSheet(context, task),
-                        child: TaskTile(task: task),
-                      ),
-                    ),
-                  ),
-                );
-              }),
-        );
+        return renderList(_taskController.taskList);
       }
     }));
+  }
+
+  renderList(RxList<Task> list) {
+    if (list.isEmpty) {
+      return _noTasksMessage();
+    } else {
+      return AnimationLimiter(
+        child: ListView.builder(
+            scrollDirection:
+                MediaQuery.of(context).orientation == Orientation.portrait
+                    ? Axis.vertical
+                    : Axis.horizontal,
+            itemCount: list.length,
+            itemBuilder: (BuildContext context, int index) {
+              Task task = list[index];
+              var date = DateFormat.jm().parse(task.startTime!);
+              var myTime = DateFormat('HH:mm').format(date);
+
+              return AnimationConfiguration.staggeredList(
+                position: index,
+                duration: Duration(milliseconds: 1000 + index * 20),
+                child: ScaleAnimation(
+                  // horizontalOffset: 400.0,
+                  child: FadeInAnimation(
+                    child: GestureDetector(
+                      onTap: () => displayBottomSheet(context, task),
+                      child: TaskTile(task: task),
+                    ),
+                  ),
+                ),
+              );
+            }),
+      );
+    }
   }
 
   displayBottomSheet(context, Task task) {

@@ -12,7 +12,8 @@ class InputField extends StatefulWidget {
       this.widget,
       required this.iconOrdrop,
       required this.isEnabled,
-      this.onTap})
+      this.onTap,
+      this.onChange})
       : super(key: key);
   final String label;
   final TextEditingController? controller;
@@ -22,6 +23,7 @@ class InputField extends StatefulWidget {
   final Widget? widget;
   final bool isEnabled;
   final VoidCallback? onTap;
+  final Function(String)? onChange;
 
   @override
   _InputFieldState createState() => _InputFieldState();
@@ -44,6 +46,7 @@ class _InputFieldState extends State<InputField> {
           height: 5,
         ),
         TextFormField(
+          onChanged: widget.onChange,
           onTap: widget.onTap,
           readOnly: !widget.isEnabled,
           controller: widget.controller,
