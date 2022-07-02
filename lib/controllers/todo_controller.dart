@@ -51,7 +51,8 @@ class TodoController extends GetxController {
 
   Future<void> searchTask(String query) async {
     filteredTaskList.assignAll(taskList
-        .where((p0) => p0.title?.toLowerCase().contains(query) ?? false)
+        .where((p0) =>
+            p0.title?.toLowerCase().contains(query.toLowerCase()) ?? false)
         .toList());
     filteredTaskList.refresh();
     taskList.refresh();
