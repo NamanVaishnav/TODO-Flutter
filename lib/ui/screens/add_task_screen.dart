@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:todo_flutter/models/task.dart';
 import 'package:todo_flutter/services/theme_services.dart';
 import 'package:todo_flutter/ui/theme.dart';
-import 'package:todo_flutter/ui/widgets/buttonWidget.dart';
+import 'package:todo_flutter/ui/widgets/button_widget.dart';
 import 'package:todo_flutter/ui/widgets/input_field.dart';
 
 class AddTaskScreen extends StatefulWidget {
@@ -30,11 +30,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   String _startDate = DateFormat('hh:mm a').format(DateTime.now());
   String _endDate = DateFormat('hh:mm a')
       .format(DateTime.now().add(const Duration(minutes: 15)));
-  int _selectedColor = 0;
+  final int _selectedColor = 0;
 
   @override
   void initState() {
-    // TODO: implement initState
+    super.initState();
     bool update = (widget.task != null) ? true : false;
     if (update) {
       if (widget.task != null) {
@@ -115,7 +115,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     },
                     controller: _dateController,
                     isEnabled: false,
-                    hint: '${_selectedDate.toString()}',
+                    hint: _selectedDate.toString(),
                     label: 'Date',
                     iconOrdrop: 'button',
                     widget: IconButton(
@@ -185,15 +185,21 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     children: [
                       //_colorPallete(),
                       ButtonWidget(
-                          label: 'Add Task',
+                          label: update ? 'Update Task' : 'Add Task',
                           onTap: () async {
                             _submitDate();
                             _submitStartTime();
                             _submitEndTime();
                             if (_formKey.currentState!.validate()) {
                               final Task task = Task();
-                              _addTaskToDB(task);
-                              await _taskController.addTask(task);
+                              if (update) {
+                                _addTaskToDB(widget.task!);
+                                await _taskController.updateTask(widget.task!);
+                              } else {
+                                _addTaskToDB(task);
+                                await _taskController.addTask(task);
+                              }
+
                               Get.back();
                             }
                           },
@@ -230,8 +236,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     setState(() {
       if (selected != null) {
         _selectedDate = DateFormat.yMd().format(selected).toString();
-      } else
+      } else {
         _selectedDate = DateFormat.yMd().format(DateTime.now()).toString();
+      }
     });
   }
 

@@ -62,7 +62,8 @@ class _InputFieldState extends State<InputField> {
                     color: Get.isDarkMode ? Colors.white : Colors.grey,
                   )
                 : Container(
-                    margin: EdgeInsets.only(right: 10), child: widget.widget),
+                    margin: const EdgeInsets.only(right: 10),
+                    child: widget.widget),
             hintText: widget.hint,
             hintStyle:
                 TextStyle(color: Get.isDarkMode ? Colors.white70 : Colors.grey),

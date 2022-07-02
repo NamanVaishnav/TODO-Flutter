@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class ButtonWidget extends StatelessWidget {
   const ButtonWidget(
@@ -18,12 +17,12 @@ class ButtonWidget extends StatelessWidget {
         width: 200,
         height: 50,
         alignment: Alignment.center,
-        child: Text(
-          label,
-          style: TextStyle(color: Colors.white, fontSize: 15),
-        ),
         decoration:
             BoxDecoration(color: color, borderRadius: BorderRadius.circular(5)),
+        child: Text(
+          label,
+          style: const TextStyle(color: Colors.white, fontSize: 15),
+        ),
       ),
     );
   }

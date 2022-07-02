@@ -23,17 +23,19 @@ class _HomeScreenState extends State<HomeScreen>
   late final TabController _controller = TabController(length: 3, vsync: this);
   List<Widget> tabs = [];
   final TodoController _taskController = Get.put(TodoController());
-  DateTime _selectedate = DateTime.now();
 
   @override
   void initState() {
     super.initState();
+    _buildTabs();
     _taskController.getTaskList();
     _controller.addListener(() {
-      print(_controller.index);
       _taskController.currentSelectedIndex = _controller.index;
       _taskController.getTaskList();
     });
+  }
+
+  _buildTabs() {
     tabs = [
       Container(
         child: _tasks(),
@@ -66,9 +68,9 @@ class _HomeScreenState extends State<HomeScreen>
         ),
         Expanded(
             child: TabBarView(
-          physics: NeverScrollableScrollPhysics(),
-          children: tabs,
+          physics: const NeverScrollableScrollPhysics(),
           controller: _controller,
+          children: tabs,
         ))
       ]),
     );
@@ -89,6 +91,17 @@ class _HomeScreenState extends State<HomeScreen>
         ),
         color: Get.isDarkMode ? Colors.white : darkGreyClr,
       ),
+      actions: [
+        IconButton(
+          onPressed: () {
+            _taskController.deleteAllTasks();
+          },
+          icon: Icon(
+            Get.isDarkMode ? Icons.delete_outline_outlined : Icons.delete,
+          ),
+          color: Get.isDarkMode ? Colors.white : darkGreyClr,
+        )
+      ],
     );
   }
 
@@ -99,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen>
         Icons.add,
         color: Colors.white,
       ),
-      onPressed: () => Get.to(() => AddTaskScreen(),
+      onPressed: () => Get.to(() => const AddTaskScreen(),
           transition: Transition.downToUp,
           duration: const Duration(milliseconds: 500)),
     );
@@ -147,9 +160,12 @@ class _HomeScreenState extends State<HomeScreen>
         builder: (_) => CupertinoActionSheet(
               actions: [
                 CupertinoActionSheetAction(
-                    onPressed: () => Get.to(() => AddTaskScreen(task: task),
-                        transition: Transition.downToUp,
-                        duration: const Duration(milliseconds: 500)),
+                    onPressed: () {
+                      Get.back();
+                      Get.to(() => AddTaskScreen(task: task),
+                          transition: Transition.downToUp,
+                          duration: const Duration(milliseconds: 500));
+                    },
                     child: const Text('Update Task')),
                 task.isCompleted == 0
                     ? CupertinoActionSheetAction(
@@ -200,7 +216,7 @@ class _HomeScreenState extends State<HomeScreen>
             const SizedBox(
               height: 20,
             ),
-            Text("There Is No Tasks"),
+            const Text("There is no Tasks"),
           ],
         ),
       ),

@@ -17,11 +17,6 @@ class TodoController extends GetxController {
     }
   }
 
-  Future<void> getTask() async {
-    final List<Map<String, dynamic>> tasks = await DBHelper().queryAllRows();
-    // taskList.assignAll(tasks.map((data) => Task.fromMap(data)).toList());
-  }
-
   Future<void> getTodaysTask() async {
     final List<Map<String, dynamic>> tasks = await DBHelper().queryTodaysRows();
     taskList.assignAll(tasks.map((data) => Task.fromMap(data)).toList());
@@ -44,13 +39,12 @@ class TodoController extends GetxController {
     var todayTaks = tasksToday.map((data) => Task.fromMap(data)).toList();
     var tomorrowTaks = tasksTomorrow.map((data) => Task.fromMap(data)).toList();
 
-    todayTaks.forEach((element) {
+    for (var element in todayTaks) {
       allTaks.removeWhere((element1) => element.id == element1.id);
-    });
-    tomorrowTaks.forEach((element) {
+    }
+    for (var element in tomorrowTaks) {
       allTaks.removeWhere((element1) => element.id == element1.id);
-    });
-
+    }
     taskList.assignAll(allTaks);
   }
 
@@ -67,6 +61,11 @@ class TodoController extends GetxController {
 
   deleteAllTasks() async {
     await DBHelper().deleteAllTasks();
+    getTaskList();
+  }
+
+  updateTask(Task task) async {
+    await DBHelper().updateAllFields(task);
     getTaskList();
   }
 

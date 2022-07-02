@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:todo_flutter/bindings/bindings.dart';
@@ -29,13 +28,14 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      smartManagement: SmartManagement.full,
       initialBinding: TodoBindings(),
       title: 'TODO',
       theme: Themes.light,
       darkTheme: Themes.dark,
       themeMode: _ts.theme,
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+      home: const HomeScreen(),
     );
   }
 }
