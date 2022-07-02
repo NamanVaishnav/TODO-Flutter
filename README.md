@@ -12,7 +12,32 @@ list of things which is there on application :
 - On application relaunch the previously added/modified task should be displayed from database.
 - Add Searchbar to filter list of TO-DO task
 
+
 -----------------------------
+### v2.0.0
+-----------------------------
+## 🔥 Vertical filters on UI
+-----------------------------
+
+## iPhone
+
+
+https://user-images.githubusercontent.com/6386216/177012132-aec3bd96-d93f-41fc-8d21-c5fb39aec5b4.mp4
+
+
+## Android
+
+
+https://user-images.githubusercontent.com/6386216/177012288-6609cf4b-cede-4afd-a711-aed18d2226e7.MP4
+
+
+-----------------------------
+### v1.0.0
+-----------------------------
+## 🚀 Task Completion
+-----------------------------
+
+
 ## iPhone 
 
 https://user-images.githubusercontent.com/6386216/176998523-7841b587-4377-4d4c-87ca-faf84b1af58a.mp4
