@@ -9,7 +9,8 @@ import 'package:todo_flutter/ui/widgets/buttonWidget.dart';
 import 'package:todo_flutter/ui/widgets/input_field.dart';
 
 class AddTaskScreen extends StatefulWidget {
-  const AddTaskScreen({Key? key}) : super(key: key);
+  final Task? task;
+  const AddTaskScreen({Key? key, this.task}) : super(key: key);
 
   @override
   State<AddTaskScreen> createState() => _AddTaskScreenState();
@@ -32,12 +33,33 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   int _selectedColor = 0;
 
   @override
+  void initState() {
+    // TODO: implement initState
+    bool update = (widget.task != null) ? true : false;
+    if (update) {
+      if (widget.task != null) {
+        _titleController.text = widget.task?.title ?? "";
+        _descriptionController.text = widget.task?.note ?? "";
+        _selectedDate =
+            widget.task?.date ?? DateFormat.yMd().format(DateTime.now());
+        _startDate = widget.task?.startTime ??
+            DateFormat('hh:mm a').format(DateTime.now());
+        _endDate = widget.task?.endTime ??
+            DateFormat('hh:mm a')
+                .format(DateTime.now().add(const Duration(minutes: 15)));
+        return;
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    bool update = (widget.task != null) ? true : false;
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         backgroundColor: primaryClr,
-        title: const Text('Add Task'),
+        title: Text(update ? 'Update Task' : 'Add Task'),
         leading: IconButton(
           onPressed: () {
             ThemeServices().switchTheme();
@@ -59,7 +81,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            margin: EdgeInsets.only(top: 15, left: 20, right: 20),
+            margin: const EdgeInsets.only(top: 15, left: 20, right: 20),
             child: Form(
               key: _formKey,
               child: Column(

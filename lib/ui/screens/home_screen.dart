@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/svg.dart';
@@ -65,6 +66,7 @@ class _HomeScreenState extends State<HomeScreen>
         ),
         Expanded(
             child: TabBarView(
+          physics: NeverScrollableScrollPhysics(),
           children: tabs,
           controller: _controller,
         ))
@@ -122,9 +124,9 @@ class _HomeScreenState extends State<HomeScreen>
 
                 return AnimationConfiguration.staggeredList(
                   position: index,
-                  duration: Duration(milliseconds: 500 + index * 20),
-                  child: SlideAnimation(
-                    horizontalOffset: 400.0,
+                  duration: Duration(milliseconds: 1000 + index * 20),
+                  child: ScaleAnimation(
+                    // horizontalOffset: 400.0,
                     child: FadeInAnimation(
                       child: GestureDetector(
                         onTap: () => displayBottomSheet(context, task),
@@ -140,42 +142,40 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   displayBottomSheet(context, Task task) {
-    showModalBottomSheet(
+    showCupertinoModalPopup(
         context: context,
-        builder: (BuildContext bc) {
-          return _bottomSheet(task);
-        });
+        builder: (_) => CupertinoActionSheet(
+              actions: [
+                CupertinoActionSheetAction(
+                    onPressed: () => Get.to(() => AddTaskScreen(task: task),
+                        transition: Transition.downToUp,
+                        duration: const Duration(milliseconds: 500)),
+                    child: const Text('Update Task')),
+                task.isCompleted == 0
+                    ? CupertinoActionSheetAction(
+                        onPressed: () {
+                          _taskController.markAsCompleted(task.id);
+                          Get.back();
+                        },
+                        child: const Text('Complete Task'))
+                    : Container(),
+                CupertinoActionSheetAction(
+                    onPressed: () {
+                      _taskController.deleteTask(task.id);
+                      Get.back();
+                    },
+                    isDestructiveAction: true,
+                    child: const Text('Delete Task')),
+              ],
+              cancelButton: CupertinoActionSheetAction(
+                onPressed: () => _close(context),
+                child: const Text('Cancel'),
+              ),
+            ));
   }
 
-  Widget _bottomSheet(Task task) {
-    return Container(
-      margin: EdgeInsets.all(20),
-      height: MediaQuery.of(context).orientation == Orientation.portrait
-          ? MediaQuery.of(context).size.height * 0.2
-          : MediaQuery.of(context).size.height * 0.4,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          task.isCompleted == 0
-              ? ElevatedButton(
-                  onPressed: () {
-                    _taskController.markAsCompleted(task.id);
-                    Get.back();
-                  },
-                  child: Text("Complete Task"))
-              : SizedBox(
-                  height: 0,
-                ),
-          ElevatedButton(
-              onPressed: () {
-                _taskController.deleteTask(task.id);
-                Get.back();
-              },
-              child: Text("Delete Task")),
-          ElevatedButton(onPressed: () => Get.back(), child: Text("Cancel"))
-        ],
-      ),
-    );
+  void _close(BuildContext ctx) {
+    Navigator.of(ctx).pop();
   }
 
   Widget _noTasksMessage() {
