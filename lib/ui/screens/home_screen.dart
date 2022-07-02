@@ -21,7 +21,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
-  late final TabController _controller = TabController(length: 3, vsync: this);
+  late final TabController _controller =
+      TabController(length: 3, vsync: this, initialIndex: 2);
   List<Widget> tabs = [];
   final TodoController _taskController = Get.put(TodoController());
   final TextEditingController _searchController = TextEditingController();
