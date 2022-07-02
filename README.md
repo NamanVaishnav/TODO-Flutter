@@ -16,7 +16,7 @@ list of things which is there on application :
 -----------------------------
 ### v2.0.0
 -----------------------------
-## 🔥 Vertical filters on UI
+## 🔥 Update with vertical filters ❤️ 
 -----------------------------
 
 ## iPhone
